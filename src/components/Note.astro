@@ -1,8 +1,7 @@
 ---
 import "../styles/global.css";
 ---
-
-<div class="max-w-[600px] max-h-[300px] m-2 p-2 flex flex-col justify-between bg-pink-200 text-black border-pink-400 border-2 rounded-xl">
+<div class="note-card max-w-[600px] max-h-[300px] m-2 p-2 flex flex-col justify-between rounded-xl">
   <div>
     <h2>Note</h2>
   </div>
@@ -10,3 +9,11 @@ import "../styles/global.css";
     <p class="font-light">Preview</p>
   </div>
 </div>
+
+<style>
+  .note-card {
+    background-color: var(--bg-secondary);
+    color: var(--text-color);
+    border: 2px solid var(--border-color);
+  }
+</style>

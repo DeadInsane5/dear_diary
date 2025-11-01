@@ -1,8 +1,25 @@
 ---
 import "../styles/global.css";
 ---
-
-<div class="h-[800px] m-2 p-2 flex flex-col items-end bg-pink-50 border-pink-400 border-4 rounded-4xl">
-  <textarea class="grow w-full p-2 text-xl rounded-2xl" name="note" id="note" maxlength="2000" placeholder="Date: \n\nThoughts: " />
-  <button class="m-2 p-2 px-4 bg-pink-300 border-pink-400 border-2 rounded-lg">Save</button>
+<div class="editor-container h-[800px] m-2 p-2 flex flex-col items-end rounded-4xl">
+  <textarea class="editor-textarea grow w-full p-2 text-xl rounded-2xl" name="note" id="note" maxlength="2000" placeholder="Date: \n\nThoughts: " />
+  <button class="save-btn m-2 p-2 px-4 rounded-lg">Save</button>
 </div>
+
+<style>
+  .editor-container {
+    background-color: var(--bg-tertiary);
+    border: 4px solid var(--border-color);
+  }
+  
+  .editor-textarea {
+    background-color: var(--bg-primary);
+    color: var(--text-color);
+  }
+  
+  .save-btn {
+    background-color: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    color: var(--text-color);
+  }
+</style>

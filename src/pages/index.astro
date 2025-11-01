@@ -3,7 +3,6 @@ import "../styles/global.css";
 import Note from "../components/Note.astro";
 import Editor from "../components/Editor.astro";
 ---
-
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -11,11 +10,30 @@ import Editor from "../components/Editor.astro";
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <title>Astro</title>
+    <script is:inline>
+    const theme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', theme);
+    </script>
+    <style>
+    h1 {
+      color: var(--heading-color);
+    }
+
+    .theme-toggle {
+      background-color: var(--bg-secondary);
+      border: 2px solid var(--border-color);
+      color: var(--text-color);
+    }
+    </style>
   </head>
-  <body class="p-2 bg-pink-100">
+  <body class="p-2">
     <div class="flex">
       <div class="grow mx-8">
-        <h1 class="m-2 my-4 text-4xl font-bold text-pink-400">Dear Diary</h1>
+        <div class="flex justify-between items-center">
+          <h1 class="m-2 my-4 text-4xl font-bold">Dear Diary</h1>
+          <button id="theme-toggle" class="theme-toggle p-2 px-4 rounded-lg">
+            Change POV
+          </button>        </div>
         <Note/>
         <Note/>
         <Note/>
@@ -25,7 +43,18 @@ import Editor from "../components/Editor.astro";
       <div class="grow mx-8">
         <Editor/>
       </div>
-
     </div>
   </body>
 </html>
+
+<script>
+const toggle = document.getElementById('theme-toggle');
+
+toggle?.addEventListener('click', () => {
+  const current = document.documentElement.getAttribute('data-theme');
+  const next = current === 'light' ? 'dark' : 'light';
+
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('theme', next);
+});
+</script>
