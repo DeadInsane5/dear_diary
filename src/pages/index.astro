@@ -1,16 +1,31 @@
 ---
-
+import "../styles/global.css";
+import Note from "../components/Note.astro";
+import Editor from "../components/Editor.astro";
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Astro</title>
+  </head>
+  <body class="p-2 bg-pink-100">
+    <div class="flex">
+      <div class="grow mx-8">
+        <h1 class="m-2 my-4 text-4xl font-bold text-pink-400">Dear Diary</h1>
+        <Note/>
+        <Note/>
+        <Note/>
+        <Note/>
+        <Note/>
+      </div>
+      <div class="grow mx-8">
+        <Editor/>
+      </div>
+
+    </div>
+  </body>
 </html>
