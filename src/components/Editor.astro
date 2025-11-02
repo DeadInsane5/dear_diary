@@ -3,7 +3,7 @@ import "../styles/global.css";
 ---
 <div class="editor-container h-[800px] m-2 p-2 flex flex-col items-end rounded-4xl">
   <textarea class="editor-textarea grow w-full p-2 text-xl rounded-2xl" name="note" id="note" maxlength="2000" placeholder="Date: \n\nThoughts: " />
-  <button class="save-btn m-2 p-2 px-4 rounded-lg">Save</button>
+  <button id="save-btn" class="save-btn m-2 p-2 px-4 rounded-lg">Save</button>
 </div>
 
 <style>
@@ -23,3 +23,52 @@ import "../styles/global.css";
     color: var(--text-color);
   }
 </style>
+<script>
+  const saveBtn = document.getElementById('save-btn');
+  const textarea = document.querySelector('.editor-textarea');
+
+  saveBtn.addEventListener('click', async () => {
+    const content = textarea.value;
+    const dateMatch = content.match(/Date: (.*)/);
+    const thoughtsMatch = content.match(/Thoughts: (.*)/s);
+
+    const date = dateMatch ? dateMatch[1] : '';
+    const thoughts = thoughtsMatch ? thoughtsMatch[1] : '';
+    const writer = document.documentElement.getAttribute('data-theme') === 'light' ? 'her' : 'him';
+
+    const note = {
+      writer,
+      date,
+      thoughts,
+    };
+
+    try {
+      const response = await fetch('/api/notes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(note),
+      });
+
+      if (response.ok) {
+        textarea.value = '';
+        // Optionally, you can add a success message or update the UI
+        console.log('Note saved successfully');
+        location.reload();
+      } else {
+        console.error('Failed to save note');
+      }
+    } catch (error) {
+      console.error('Error saving note:', error);
+    }
+  });
+
+  function loadNote(note) {
+    textarea.value = `Date: ${note.date}\n\nThoughts: ${note.thoughts}`;
+  }
+
+  document.addEventListener('load-note', (event) => {
+    loadNote(event.detail);
+  });
+</script>

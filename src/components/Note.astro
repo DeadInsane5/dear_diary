@@ -1,12 +1,13 @@
 ---
 import "../styles/global.css";
+const { note } = Astro.props;
 ---
-<div class="note-card max-w-[600px] max-h-[300px] m-2 p-2 flex flex-col justify-between rounded-xl">
+<div class="note-card max-w-[600px] max-h-[300px] m-2 p-2 flex flex-col justify-between rounded-xl" data-note={JSON.stringify(note)}>
   <div>
-    <h2>Note</h2>
+    <h2>{note.date}</h2>
   </div>
   <div>
-    <p class="font-light">Preview</p>
+    <p class="font-light">{note.thoughts.substring(0, 100)}...</p>
   </div>
 </div>
 

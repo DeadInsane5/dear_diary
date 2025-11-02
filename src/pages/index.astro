@@ -2,7 +2,18 @@
 import "../styles/global.css";
 import Note from "../components/Note.astro";
 import Editor from "../components/Editor.astro";
+
+let notes = [];
+try {
+  const response = await fetch("http://localhost:4321/api/notes");
+  if (response.ok) {
+    notes = await response.json();
+  }
+} catch (error) {
+  console.error("Failed to fetch notes:", error);
+}
 ---
+
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -11,19 +22,19 @@ import Editor from "../components/Editor.astro";
     <meta name="generator" content={Astro.generator} />
     <title>Astro</title>
     <script is:inline>
-    const theme = localStorage.getItem('theme') || 'light';
-    document.documentElement.setAttribute('data-theme', theme);
+      const theme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', theme);
     </script>
     <style>
-    h1 {
-      color: var(--heading-color);
-    }
+      h1 {
+        color: var(--heading-color);
+      }
 
-    .theme-toggle {
-      background-color: var(--bg-secondary);
-      border: 2px solid var(--border-color);
-      color: var(--text-color);
-    }
+      .theme-toggle {
+        background-color: var(--bg-secondary);
+        border: 2px solid var(--border-color);
+        color: var(--text-color);
+      }
     </style>
   </head>
   <body class="p-2">
@@ -33,28 +44,39 @@ import Editor from "../components/Editor.astro";
           <h1 class="m-2 my-4 text-4xl font-bold">Dear Diary</h1>
           <button id="theme-toggle" class="theme-toggle p-2 px-4 rounded-lg">
             Change POV
-          </button>        </div>
-        <Note/>
-        <Note/>
-        <Note/>
-        <Note/>
-        <Note/>
+          </button>
+        </div>
+        <div id="notes-container">
+          {notes.map((note: any) => (
+            <Note note={note} />
+          ))}
+        </div>
       </div>
       <div class="grow mx-8">
-        <Editor/>
+        <Editor />
       </div>
     </div>
   </body>
 </html>
 
 <script>
-const toggle = document.getElementById('theme-toggle');
+  const toggle = document.getElementById('theme-toggle');
 
-toggle?.addEventListener('click', () => {
-  const current = document.documentElement.getAttribute('data-theme');
-  const next = current === 'light' ? 'dark' : 'light';
+  toggle?.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'light' ? 'dark' : 'light';
 
-  document.documentElement.setAttribute('data-theme', next);
-  localStorage.setItem('theme', next);
-});
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+  });
+
+  const notesContainer = document.getElementById('notes-container');
+  notesContainer.addEventListener('click', (event) => {
+    const noteElement = event.target.closest('.note-card');
+    if (noteElement) {
+      const note = JSON.parse(noteElement.dataset.note);
+      const customEvent = new CustomEvent('load-note', { detail: note });
+      document.dispatchEvent(customEvent);
+    }
+  });
 </script>
